@@ -1,0 +1,20 @@
+{
+  "short_name": "StartUp Vest",
+  "name": "StartUp Vest",
+  "icons": [
+    {
+      "src": "logo.ico",
+      "sizes": "512x512",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
