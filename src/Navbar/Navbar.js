@@ -56,7 +56,7 @@ export default function Navbar() {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/users/profile', {
+      const response = await axios.get(`${process.env.API_URL}/users/profile`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
@@ -66,7 +66,7 @@ export default function Navbar() {
       setLastName(response.data.lastName);
   
       try {
-        const profilePicResponse = await axios.get(`http://localhost:3000/profile-picture/${response.data.id}`, {
+        const profilePicResponse = await axios.get(`${process.env.API_URL}/profile-picture/${response.data.id}`, {
           responseType: 'blob',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,

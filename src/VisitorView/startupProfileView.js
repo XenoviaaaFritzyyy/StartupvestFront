@@ -32,7 +32,7 @@ function StartUpView() {
       if (!startup?.id) return; // Ensure startup exists
       setCompanyId(startup.id);
       try {
-        const response = await axios.get(`http://localhost:3000/profile-picture/startup/${startup.id}`, {
+        const response = await axios.get(`${process.env.API_URL}/profile-picture/startup/${startup.id}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },

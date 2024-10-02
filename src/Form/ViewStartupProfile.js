@@ -135,7 +135,7 @@ function ViewStartupProfile({ profile }) {
                     industry: industry,
                 };
     
-                const endpoint = `http://localhost:3000/startups/${profile.id}`;
+                const endpoint = `${process.env.API_URL}/startups/${profile.id}`;
                 
                 await axios.put(endpoint, profileData, {
                     headers: {
@@ -168,7 +168,7 @@ function ViewStartupProfile({ profile }) {
             const pictureFormData = new FormData();
             pictureFormData.append('file', fileInputRef.current.files[0]);
       
-            const pictureEndpoint = `http://localhost:3000/profile-picture/startup/${profile.id}/update`;
+            const pictureEndpoint = `${process.env.API_URL}/profile-picture/startup/${profile.id}/update`;
       
             await axios.put(pictureEndpoint, pictureFormData, {
               headers: {
@@ -188,7 +188,7 @@ function ViewStartupProfile({ profile }) {
 
       const fetchProfilePicture = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/profile-picture/startup/${profile.id}`, {
+          const response = await axios.get(`${process.env.API_URL}/profile-picture/startup/${profile.id}`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },
