@@ -433,7 +433,7 @@ function CreateFundingRound({ onSuccess }) {
 
             <Grid container spacing={3} sx={{ ml: 2 }}>
                 {investors.map((investor, index) => (
-                    <Grid item xs={12} sm={11} key={index}>
+                    <Grid item xs={12} sm={11} key={investor.id}>
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
                                 <label>Shareholder's Name</label>
