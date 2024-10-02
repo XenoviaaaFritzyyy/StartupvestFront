@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = `${process.env.API_URL}/activities`;
+const API_URL = `${process.env.REACT_APP_API_URL}/activities`;
 
 export const logActivity = async (action, details, fetchRecentActivities) => {
   try {

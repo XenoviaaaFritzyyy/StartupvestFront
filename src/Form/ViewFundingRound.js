@@ -47,7 +47,7 @@ function ViewFundingRound({ fundingRoundDetails }) {
     useEffect(() => {
         const fetchStartups = async () => {
             try {
-                const response = await axios.get(`${process.env.API_URL}/startups`, {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/startups`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
@@ -60,7 +60,7 @@ function ViewFundingRound({ fundingRoundDetails }) {
 
         const fetchInvestors = async () => {
             try {
-                const response = await axios.get(`${process.env.API_URL}/investors/All`, {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/investors/All`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
@@ -242,7 +242,7 @@ function ViewFundingRound({ fundingRoundDetails }) {
                 investors: updatedInvestors
             };
     
-            const response = await axios.put(`${process.env.API_URL}/funding-rounds/${fundingRoundDetails.id}`, updatePayload, {
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}/funding-rounds/${fundingRoundDetails.id}`, updatePayload, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
@@ -269,7 +269,7 @@ function ViewFundingRound({ fundingRoundDetails }) {
             setInvestors(updatedInvestors);
     
             // Send a request to the backend to mark the investor as removed
-            const response = await axios.put(`${process.env.API_URL}/cap-table-investor/${investorToRemove.name}/${fundingRoundDetails.id}`, {
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}/cap-table-investor/${investorToRemove.name}/${fundingRoundDetails.id}`, {
                 investorRemoved: true, 
             });
     

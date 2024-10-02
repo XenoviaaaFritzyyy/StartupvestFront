@@ -71,7 +71,7 @@ function Signup() {
         }
 
         try {
-            const response = await axios.post(`${process.env.API_URL}/users/register`, userData);
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/register`, userData);
             console.log('Signup successful:', response.data);
             setOpenDialog(true);
             setTimeout(() => navigate('/login'), 2000);
@@ -83,7 +83,7 @@ function Signup() {
 
     const checkEmailExists = async () => {
         try {
-            const response = await axios.post(`${process.env.API_URL}/users/check-email`, { email });
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/check-email`, { email });
             setEmailExists(response.data.exists);
             setError(response.data.exists ? 'Email already exists. Please enter a different email.' : '');
         } catch (error) {

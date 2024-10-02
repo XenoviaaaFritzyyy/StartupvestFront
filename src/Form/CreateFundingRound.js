@@ -45,7 +45,7 @@ function CreateFundingRound({ onSuccess }) {
     useEffect(() => {
         const fetchStartups = async () => {
             try {
-                const response = await axios.get(`${process.env.API_URL}/startups`, {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/startups`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
@@ -58,7 +58,7 @@ function CreateFundingRound({ onSuccess }) {
 
         const fetchInvestors = async () => {
             try {
-                const response = await axios.get(`${process.env.API_URL}/investors/All`, {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/investors/All`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
@@ -150,7 +150,7 @@ function CreateFundingRound({ onSuccess }) {
                 userId: localStorage.getItem('userId')
             };
 
-            await axios.post(`${process.env.API_URL}/funding-rounds/createfund`, formData, {
+            await axios.post(`${process.env.REACT_APP_API_URL}/funding-rounds/createfund`, formData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }

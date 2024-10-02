@@ -22,16 +22,16 @@ const AdminDashboard = () => {
     const fetchData = async () => {
       try {
         const [usersResponse, startupsResponse, investorsResponse, fundingRoundsResponse] = await Promise.all([
-          axios.get(`${process.env.API_URL}/users/all`, {
+          axios.get(`${process.env.REACT_APP_API_URL}/users/all`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
           }),
-          axios.get(`${process.env.API_URL}/startups/all`, {
+          axios.get(`${process.env.REACT_APP_API_URL}/startups/all`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
           }),
-          axios.get(`${process.env.API_URL}/investors/all`, {
+          axios.get(`${process.env.REACT_APP_API_URL}/investors/all`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
           }),
-          axios.get(`${process.env.API_URL}/funding-rounds/all`, {
+          axios.get(`${process.env.REACT_APP_API_URL}/funding-rounds/all`, {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
           })
         ]);
@@ -42,7 +42,7 @@ const AdminDashboard = () => {
         const usersWithPhotos = await Promise.all(
           nonAdminUsers.map(async (user) => {
             try {
-              const profilePicResponse = await axios.get(`${process.env.API_URL}/profile-picture/${user.id}`, {
+              const profilePicResponse = await axios.get(`${process.env.REACT_APP_API_URL}/profile-picture/${user.id}`, {
                 responseType: 'blob',
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
               });
@@ -64,7 +64,7 @@ const AdminDashboard = () => {
         await Promise.all([
           ...startupsResponse.data.map(async (startup) => {
             try {
-              const response = await axios.get(`${process.env.API_URL}/profile-picture/startup/${startup.id}`, {
+              const response = await axios.get(`${process.env.REACT_APP_API_URL}/profile-picture/startup/${startup.id}`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
                 responseType: 'blob', 
               });
@@ -75,7 +75,7 @@ const AdminDashboard = () => {
           }),
           ...investorsResponse.data.map(async (investor) => {
             try {
-              const response = await axios.get(`${process.env.API_URL}/profile-picture/investor/${investor.id}`, {
+              const response = await axios.get(`${process.env.REACT_APP_API_URL}/profile-picture/investor/${investor.id}`, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
                 responseType: 'blob', 
               });

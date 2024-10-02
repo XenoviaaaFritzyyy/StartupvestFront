@@ -99,7 +99,7 @@ function ViewInvestorProfile({ profile }) {
           linkedIn,
         };
 
-        const endpoint = `${process.env.API_URL}/investors/${profile.id}`;
+        const endpoint = `${process.env.REACT_APP_API_URL}/investors/${profile.id}`;
 
         await axios.put(endpoint, profileData, {
           headers: {
@@ -129,7 +129,7 @@ function ViewInvestorProfile({ profile }) {
         const pictureFormData = new FormData();
         pictureFormData.append('file', file);
 
-        const pictureEndpoint = `${process.env.API_URL}/profile-picture/investor/${profile.id}/update`;
+        const pictureEndpoint = `${process.env.REACT_APP_API_URL}/profile-picture/investor/${profile.id}/update`;
 
         await axios.put(pictureEndpoint, pictureFormData, {
           headers: {
@@ -147,7 +147,7 @@ function ViewInvestorProfile({ profile }) {
 
   const fetchProfilePicture = async () => {
     try {
-      const response = await axios.get(`${process.env.API_URL}/profile-picture/investor/${profile.id}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/profile-picture/investor/${profile.id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

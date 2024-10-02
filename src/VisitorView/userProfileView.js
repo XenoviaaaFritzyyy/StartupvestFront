@@ -31,7 +31,7 @@ function UserProfileView() {
 
   const fetchBusinessProfiles = async () => {
     try {
-      const responseInvestors = await axios.get(`${process.env.API_URL}/investors`, {
+      const responseInvestors = await axios.get(`${process.env.REACT_APP_API_URL}/investors`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
@@ -49,7 +49,7 @@ function UserProfileView() {
       if (!profile?.id) return;
     
       try {
-        const response = await axios.get(`${process.env.API_URL}/profile-picture/investor/${profile.id}`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/profile-picture/investor/${profile.id}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },

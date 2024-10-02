@@ -111,7 +111,7 @@ export default function Companies() {
   };  
 
   useEffect(() => {
-    axios.get(`${process.env.API_URL}/startups/all`)
+    axios.get(`${process.env.REACT_APP_API_URL}/startups/all`)
       .then((response) => {
         setRows(response.data);
         setFilteredRows(response.data);
@@ -130,7 +130,7 @@ export default function Companies() {
     await Promise.all(
       startups.map(async (startup) => {
         try {
-          const response = await axios.get(`${process.env.API_URL}/profile-picture/startup/${startup.id}`, {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/profile-picture/startup/${startup.id}`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },

@@ -135,7 +135,7 @@ export default function FundingRound() {
   useEffect(() => {
     const fetchFundingRounds = async () => {
       try {
-        const response = await axios.get(`${process.env.API_URL}/funding-rounds/all`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/funding-rounds/all`);
         const fetchedRows = response.data
           .filter(fundingRound => new Date(fundingRound.closedDate) > new Date()) // Filter out closed funding rounds
           .map(fundingRound => createData(
@@ -173,7 +173,7 @@ export default function FundingRound() {
         if (!startupId) return
   
         try {
-          const response = await axios.get(`${process.env.API_URL}/profile-picture/startup/${startupId}`, {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/profile-picture/startup/${startupId}`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`,
             },

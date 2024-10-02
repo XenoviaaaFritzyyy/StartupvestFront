@@ -19,7 +19,7 @@ const UserRegistrationChart = () => {
   useEffect(() => {
     const fetchUserRegistrations = async () => {
       try {
-        const url = `${process.env.API_URL}/users/registrations-by-month?year=${year}`; // Adjust the API URL as necessary
+        const url = `${process.env.REACT_APP_API_URL}/users/registrations-by-month?year=${year}`; // Adjust the API URL as necessary
 
         const response = await axios.get(url, {
           headers: {

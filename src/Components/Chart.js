@@ -27,13 +27,13 @@ const MonthlyFundingChart = ({ userId, companyId }) => {
       try {
         let url = '';
         if (userId) {
-          url = `${process.env.API_URL}/funding-rounds/monthly-funding/${userId}?year=${year}`;
+          url = `${process.env.REACT_APP_API_URL}/funding-rounds/monthly-funding/${userId}?year=${year}`;
         } else if (companyId) {
-          url = `${process.env.API_URL}/funding-rounds/company-monthly-funding/${companyId}?year=${year}`;
+          url = `${process.env.REACT_APP_API_URL}/funding-rounds/company-monthly-funding/${companyId}?year=${year}`;
         } else {
           const storedUserId = localStorage.getItem('userId');
           if (storedUserId) {
-            url = `${process.env.API_URL}/funding-rounds/monthly-funding/${storedUserId}?year=${year}`;
+            url = `${process.env.REACT_APP_API_URL}/funding-rounds/monthly-funding/${storedUserId}?year=${year}`;
           } else {
             throw new Error('User ID or Company ID must be provided');
           }
