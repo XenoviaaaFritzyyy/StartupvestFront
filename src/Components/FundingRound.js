@@ -208,12 +208,7 @@ export default function FundingRound() {
     const filtered = rows.filter(row =>
       (row.startupName.toLowerCase() || '').includes(searchText.toLowerCase()) ||
       (row.fundingName.toLowerCase() || '').includes(searchText.toLowerCase()) ||
-      (row.fundingType?.toLowerCase() || '').includes(searchText.toLowerCase()) ||
-      (row.moneyRaised?.toLowerCase() || '').includes(searchText.toLowerCase()) ||
-      (row.announcedDate?.toLowerCase() || '').includes(searchText.toLowerCase()) ||
-      (row.preMoneyValuation?.toLowerCase() || '').includes(searchText.toLowerCase()) ||
-      (row.moneyRaisedCurrency?.toLowerCase() || '').includes(searchText.toLowerCase()) ||
-      (row.closedDate?.toLowerCase() || '').includes(searchText.toLowerCase())
+      (row.fundingType?.toLowerCase() || '').includes(searchText.toLowerCase())
     );
     setFilteredRows(filtered);
   };
