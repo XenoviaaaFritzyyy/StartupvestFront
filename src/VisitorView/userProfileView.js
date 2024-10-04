@@ -75,7 +75,7 @@ function UserProfileView() {
           <Typography variant="h4" gutterBottom>{`${profile.firstName} ${profile.lastName}`}</Typography>
         </Box>
 
-        <Divider sx={{ mt: 5 }} />
+        <Divider sx={{ mt: 2 }} />
 
         <Box component="main" sx={{ display: 'flex', flexGrow: 1, p: 4, width: '100%', overflowX: 'hidden' }}>
           <Grid container spacing={2}>
