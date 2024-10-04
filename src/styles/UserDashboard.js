@@ -82,7 +82,7 @@ export const CreateButton = styled(Button)`
 
 export const RecentActivityBox = styled(Box)`
   background-color: white;
-  height: 450px;
+  height: 540px;
   display: flex;
   flex-direction: column;
   border-radius: 5px;

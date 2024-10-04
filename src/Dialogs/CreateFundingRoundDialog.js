@@ -29,6 +29,7 @@ function CreateFundingRoundDialog({ open, onClose }) {
                         overflow: 'hidden',
                         boxShadow: '0 0 20px rgba(0, 0, 0, 0.5)',
                         position: 'relative',
+                        borderRadius: '8px',
                     }}>
                     <Box
                         sx={{

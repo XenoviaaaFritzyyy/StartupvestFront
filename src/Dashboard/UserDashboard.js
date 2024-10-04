@@ -7,6 +7,7 @@ import { History, AddCircle, MonetizationOnRounded, Person2, Business} from '@mu
 import Navbar from "../Navbar/Navbar";
 import CreateFundingRoundDialog from "../Dialogs/CreateFundingRoundDialog";
 import CreateBusinessProfileDialog from "../Dialogs/CreateBusinessProfileDialog";
+import PendingRequestInvestor from "../Tables/PendingRequestInvestorTable";
 import BusinessProfileTable from "../Tables/BusinessProfileTable";
 import FundingRoundTable from "../Tables/FundingRoundTable";
 import CapTable from "../Tables/CapTableTable";
@@ -17,7 +18,7 @@ import MonthlyFundingChart from "../Components/Chart";
 import { Container, HeaderBox, RecentActivityBox, RecentActivityList, TopInfoBox, TopInfoIcon, TopInfoText, TopInfoTitle,   CreateButton, GraphTitle, RecentActivityTitle } from "../styles/UserDashboard";
 
 function UserDashboard() {
-    const [tabValue, setTabValue] = useState(1);
+    const [tabValue, setTabValue] = useState(2);
         
     // PROFILE
     const [openCreateBusinessProfile, setCreateBusinessProfile] = useState(false);
@@ -73,7 +74,7 @@ function UserDashboard() {
 
         const timer = setTimeout(() => {
             setTabValue(0);
-        }, 1000);
+        }, 1500);
         return () => clearTimeout(timer);
     }, []);
 
@@ -514,16 +515,22 @@ return (
             <Grid item xs={12}>
                 <Tabs value={tabValue} onChange={handleTabChange} aria-label="tabs"
                     sx={{ mt: 2, "& .MuiTabs-indicator": { backgroundColor: "#007490" }, }}>
-                <Tab label="My Profile" 
+                <Tab label="Investor Requests" 
                     sx={{ color: tabValue === 0 ? "#007490" : "text.secondary", "&.Mui-selected": { color: "#007490",},}}/>
+                <Tab label="My Profile" 
+                    sx={{ color: tabValue === 1 ? "#007490" : "text.secondary", "&.Mui-selected": { color: "#007490",},}}/>
                 <Tab label="My Funding Round"
-                    sx={{color: tabValue === 1 ? "#007490" : "text.secondary", "&.Mui-selected": {color: "#007490",},}}/>
+                    sx={{color: tabValue === 2 ? "#007490" : "text.secondary", "&.Mui-selected": {color: "#007490",},}}/>
                 <Tab label="My Captable"
-                    sx={{ color: tabValue === 2 ? "#007490" : "text.secondary", "&.Mui-selected": { color: "#007490", },}}/>
+                    sx={{ color: tabValue === 3 ? "#007490" : "text.secondary", "&.Mui-selected": { color: "#007490", },}}/>
                 </Tabs>
 
                 <Box sx={{ pt: 3}}>
                     {tabValue === 0 && (
+                        <PendingRequestInvestor />
+                        )}
+
+                    {tabValue === 1 && (
                         <BusinessProfileTable 
                             businessProfiles={businessProfiles}
                             handleOpenStartUp={handleOpenStartUp}
@@ -540,7 +547,7 @@ return (
                             profileToDelete={profileToDelete}/>                            
                         )}
                                 
-                    {tabValue === 1 && (
+                    {tabValue === 2 && (
                         <FundingRoundTable 
                             filteredFundingRounds={filteredFundingRounds}
                             fundingRounds={fundingRounds}
@@ -557,7 +564,7 @@ return (
                             onHighestMoneyRaisedCompanyChange={handleHighestMoneyRaisedCompanyChange} />
                         )}
 
-                    {tabValue === 2 && (
+                    {tabValue === 3 && (
                         <CapTable 
                             filteredCapTables={filteredCapTables}
                             businessProfiles={businessProfiles} 
@@ -569,8 +576,7 @@ return (
                 </Grid>  
             </Grid>
 
-            <CreateBusinessProfileDialog open={openCreateBusinessProfile} onClose={handleCloseBusinessProfile} 
-                hasInvestorProfile={hasInvestorProfile} />
+            <CreateBusinessProfileDialog open={openCreateBusinessProfile} onClose={handleCloseBusinessProfile} hasInvestorProfile={hasInvestorProfile} />
             <CreateFundingRoundDialog open={openCreateFundingRound} onClose={handleCloseFundingRound} />
             <ActivitiesDialog open={dialogOpen} onClose={handleCloseDialog} activities={recentActivities}/>
         </Container>

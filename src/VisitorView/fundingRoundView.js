@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Box, Divider, Toolbar, Typography, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Pagination, PaginationItem } from '@mui/material';
-import StarsIcon from '@mui/icons-material/Stars';
+import { Box, Divider, Toolbar, Typography, Grid, Button, Pagination, PaginationItem, TableRow, TableBody, TableCell,} from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import axios from 'axios';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
+import InvestNowDialog from '../Dialogs/InvestNowDialog';
+import { StyledAvatar, OverviewBox, OverviewTitle, StyledTable, StyledTableHead, StyledTableCell, PaginationBox, } from '../styles/VisitorView';
 
 const drawerWidth = 240;
 
 function FundingRoundView() {
-  const [isFollowed, setIsFollowed] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage] = useState(5);
+  const [openDialog, setOpenDialog] = useState(false);
   const location = useLocation();
   const { fundinground } = location.state || {};  
-
-  console.log('Funding Round Data:', fundinground); 
 
   useEffect(() => {
     const fetchProfilePicture = async () => {
@@ -55,12 +53,16 @@ function FundingRoundView() {
     fetchProfilePicture();
   }, [fundinground]);
 
-  const handleFollowToggle = () => {
-    setIsFollowed(!isFollowed);
-  };
-
   const handlePageChange = (event, newPage) => {
     setCurrentPage(newPage);
+  };
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   if (!fundinground) {
@@ -84,24 +86,32 @@ function FundingRoundView() {
       <Toolbar />
 
       <Box sx={{ width: '100%', paddingLeft: `${drawerWidth}px`, mt: 5 }}>
-        <Box display="flex" alignItems="center">
-          <Box mr={4}>
-            <Avatar variant="rounded"
-              src={avatarUrl || 'path/to/default/image.png'}
-              sx={{ width: 150, height: 150, border: '5px solid rgba(0, 116, 144, 1)', borderRadius: 3, ml: 8, }}/>
-          </Box>
-          <Typography variant="h4" gutterBottom>{fundinground.fundingType} - {fundinground.startupName}</Typography>
-          <StarsIcon sx={{ cursor: 'pointer', ml: 1, mt: -1, color: isFollowed ? 'rgba(0, 116, 144, 1)' : 'inherit' }} onClick={handleFollowToggle} />
-        </Box>
+        <Grid container alignItems="center">
+          <Grid item mr={4}>
+            <StyledAvatar
+              variant="rounded"
+              src={avatarUrl || 'path/to/default/image.png'} />
+          </Grid>
+
+          <Grid item>
+            <Typography variant="h4" gutterBottom>
+              {fundinground.fundingType} - {fundinground.startupName}
+            </Typography>
+            
+            <Button variant='outlined' sx={{ width: '150px' }} onClick={handleOpenDialog}>
+              Invest Now
+            </Button>
+          </Grid>
+        </Grid>
 
         <Divider sx={{ mt: 5 }} />
 
         <Box component="main" sx={{ display: 'flex', flexGrow: 1, p: 4, width: '100%', overflowX: 'hidden' }}>
           <Grid container spacing={2}>
             {/* Left Box. Investor Information */}
-            <Grid item xs={12} md={10}>
-              <Box sx={{ background: 'white', display: 'flex', flexDirection: 'column', borderRadius: 2, pb: 3, pl: 5, pr: 5 }}>
-                <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgba(0, 116, 144, 1)', mb: 2 }}>Overview</Typography>
+            <Grid item xs={10} md={10}>
+            <OverviewBox>
+              <OverviewTitle variant="h5">Overview</OverviewTitle>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Grid container spacing={3}>
@@ -150,57 +160,60 @@ function FundingRoundView() {
 
                 <Divider sx={{mt: 5}}/>
 
-                <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgba(0, 116, 144, 1)', mt: 5 }}>Investors</Typography>
-                <TableContainer component={Box} sx={{ mt: 2, backgroundColor: 'white' }}>
-                  <Table>
-                    <TableHead sx={{backgroundColor: 'rgba(0, 116, 144, 1)'}}>
-                      <TableRow>
-                        <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: 'white' }}>Investor Name</TableCell>
-                        <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: 'white'  }}>Title</TableCell>
-                        <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: 'white'  }}>Share</TableCell>
-                        <TableCell sx={{ textAlign: 'center', fontWeight: 'bold', color: 'white'  }}>Total Share</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {paginatedInvestors && paginatedInvestors.map((investorDetail, index) => {
-                        const investor = investorDetail.investor || {};
-                        return (
-                          <TableRow key={index}>
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              {investor.firstName || 
-                                fundinground.capTableInvestors[0]?.investorDetails.firstName || 
-                                'N/A'} {investor.lastName || 
-                                fundinground.capTableInvestors[0]?.investorDetails.lastName || 
-                                'N/A'}
-                            </TableCell>
-                            <TableCell sx={{ textAlign: 'center' }}>{investorDetail.title || 'N/A'}</TableCell>
-                            <TableCell sx={{ textAlign: 'center' }}>
-                              {Number(investorDetail.shares || 0).toLocaleString()}
-                            </TableCell>
-                            <TableCell sx={{ textAlign: 'center' }}>
+                <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgba(0, 116, 144, 1)', mt: 5, mb: 3 }}>Investors</Typography>
+                <StyledTable>
+                  <StyledTableHead>
+                  <TableRow>
+                      <StyledTableCell>Investor Name</StyledTableCell>
+                      <StyledTableCell>Title</StyledTableCell>
+                      <StyledTableCell>Share</StyledTableCell>
+                      <StyledTableCell>Total Share</StyledTableCell>
+                    </TableRow>
+                  </StyledTableHead>
+                  <TableBody>
+                    {paginatedInvestors && paginatedInvestors.map((investorDetail, index) => {
+                      const investor = investorDetail.investor || {};
+                      return (
+                        <TableRow key={index}>
+                          <TableCell sx={{ textAlign: 'center' }}>
+                            {investor.firstName || 
+                              fundinground.capTableInvestors[0]?.investorDetails.firstName || 
+                              'N/A'} {investor.lastName || 
+                              fundinground.capTableInvestors[0]?.investorDetails.lastName || 
+                              'N/A'}
+                          </TableCell>
+                          <TableCell sx={{ textAlign: 'center' }}>{investorDetail.title || 'N/A'}</TableCell>
+                          <TableCell sx={{ textAlign: 'center' }}>
+                            {Number(investorDetail.shares || 0).toLocaleString()}
+                          </TableCell>
+                          <TableCell sx={{ textAlign: 'center' }}>
                             {fundinground.moneyRaisedCurrency} {investorDetail.totalInvestment ? Number(investorDetail.totalInvestment).toLocaleString() : 'N/A'}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </StyledTable>
 
                 {fundinground.capTableInvestors && fundinground.capTableInvestors.length > rowsPerPage && (
-                  <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-                    <Pagination count={Math.ceil(fundinground.capTableInvestors.length / rowsPerPage)}
-                      page={currentPage} onChange={handlePageChange}
+                  <PaginationBox>
+                    <Pagination 
+                      count={Math.ceil(fundinground.capTableInvestors.length / rowsPerPage)}
+                      page={currentPage} 
+                      onChange={handlePageChange}
                       renderItem={(item) => (
-                        <PaginationItem slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-                          {...item}/>
-                      )}/>
-                  </Box>
+                        <PaginationItem slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }} {...item}/>
+                      )}
+                    />
+                  </PaginationBox>
                 )}
-              </Box>
+              </OverviewBox>
             </Grid>
           </Grid>
         </Box>
+
+        {/* Invest Now Dialog */}
+        <InvestNowDialog open={openDialog} onClose={handleCloseDialog} />
       </Box>
     </>
   );

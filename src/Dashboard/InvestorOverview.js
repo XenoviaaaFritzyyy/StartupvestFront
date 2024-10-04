@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Toolbar, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Avatar, Box, Pagination, Tabs, Tab, Stack } from "@mui/material";
+import { Typography, Toolbar, Grid, Box, Tabs, Tab } from "@mui/material";
 import Navbar from "../Navbar/Navbar";
-import { tableStyles } from '../styles/tables';
+import InvestmentTable from '../Tables/InvestorMyInvestments';
+import InvestorRequest from '../Tables/InvestorMyRequests';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { TopInfoBox, TopInfoText, TopInfoTitle } from '../styles/UserDashboard';
@@ -249,106 +250,26 @@ function InvestorOverview() {
       </Grid>
 
       {/* Tabs Section */}
-      <Box sx={{ width: '100%', pl: '285px', pr: '50px', pt: 3}}>
-        <Tabs value={tabIndex} onChange={handleChangeTab} aria-label="Investor Profile Tabs">
-          <Tab label="My Investments" />
+      <Box sx={{ width: '100%', pl: '285px', pr: '50px', pt: 3 }}>
+        <Tabs value={tabIndex} onChange={handleChangeTab} aria-label="Investor Tabs" TabIndicatorProps={{ style: { backgroundColor: '#007490' } }}>
+          <Tab label="Pending Request" 
+              sx={{ color: tabIndex === 0 ? "#007490" : "text.secondary", "&.Mui-selected": { color: "#007490",},}}/>
+          <Tab label="My Investments" 
+              sx={{ color: tabIndex === 1 ? "#007490" : "text.secondary", "&.Mui-selected": { color: "#007490",},}}/>
         </Tabs>
 
         {tabIndex === 0 && (
-            <TableContainer component={Paper} sx={{ mt: 3 }}>
-              <Table sx={tableStyles} aria-label="investments table">
-                <TableHead sx={tableStyles.head}>
-                  <TableRow>
-                    <TableCell>
-                      <Typography sx={{ fontWeight: 'bold', color: 'white', ml: 10 }}>Company Name</Typography>
-                    </TableCell>
-                    
-                    <TableCell sx={tableStyles.head}>
-                      <Typography sx={tableStyles.typography}>Funding Name</Typography>
-                    </TableCell>
+          <InvestorRequest />
+        )}
 
-                    <TableCell sx={tableStyles.head}>
-                      <Typography sx={tableStyles.typography}>Type</Typography>
-                    </TableCell>
-
-                    <TableCell sx={tableStyles.head}>
-                      <Typography sx={tableStyles.typography}>Shares</Typography>
-                    </TableCell>
-
-                    <TableCell sx={tableStyles.head}>
-                      <Typography sx={tableStyles.typography}>Total Share</Typography>
-                    </TableCell>
-
-                    <TableCell sx={tableStyles.head}>
-                      <Typography sx={tableStyles.typography}>Percentage</Typography>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-
-                <TableBody>
-                  {filteredRows.length > 0 ? (
-                    filteredRows.slice((page - 1) * rowsPerPage, page * rowsPerPage).map((row) => (
-                      <TableRow key={row.id} hover onClick={() => handleRowClick(row)}
-                        sx={{ cursor: 'pointer'}}>
-                          <TableCell sx={{ ...tableStyles.cell, width: '30%'}}>
-                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', ml: 5 }}>
-                            <Avatar src={profilePictures[row.startupId]} sx={{ mr: 2, border: '2px rgba(0, 116, 144, 1) solid', borderRadius: 1 }} variant='square' />
-                            {row.startupName}
-                          </Box>
-                        </TableCell>
-
-                        <TableCell sx={tableStyles.cell}>{row.fundingName}</TableCell>
-
-                        <TableCell sx={tableStyles.cell}>{row.fundingType}</TableCell>
-                        
-                        <TableCell sx={tableStyles.cell}>
-                          {row.capTableInvestors.map((investor, index) => (
-                            <div key={index}>
-                              {Number(investor.shares).toLocaleString()}
-                            </div>
-                          ))}
-                        </TableCell>
-
-                        <TableCell sx={tableStyles.cell}>
-                          {row.capTableInvestors.map((investor, index) => (
-                            <div key={index}>
-                              {row.moneyRaisedCurrency} {Number(investor.totalInvestment).toLocaleString()}
-                            </div>
-                          ))}                        
-                        </TableCell>
-
-                        <TableCell sx={tableStyles.cell}>
-                            {row.capTableInvestors.map((investor) => {
-                                const userShares = investor.shares || 0;
-                                const percentage = row.totalShares ? ((userShares / row.totalShares) * 100).toFixed(2) : '0.00';
-                                return (
-                                    <div key={investor.id}>
-                                        {percentage}%
-                                    </div>
-                                );
-                            })}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={5} sx={{ textAlign: 'center' }}>
-                        <Typography variant="body2" color="textSecondary">
-                          You currently have no active investments.
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-
-              {filteredRows.length > 0 && (
-                <Stack spacing={2} sx={{ p: 2, display: 'flex', alignItems: 'center' }}>
-                  <Pagination count={Math.ceil(filteredRows.length / rowsPerPage)}
-                    page={page} onChange={handleChangePage} size="medium"/>
-                </Stack>
-              )}
-            </TableContainer>
+        {tabIndex === 1 && (
+          <InvestmentTable 
+            filteredRows={filteredRows}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            handleRowClick={handleRowClick}
+            profilePictures={profilePictures}
+            handleChangePage={handleChangePage} />
         )}
       </Box>
     </Box>
