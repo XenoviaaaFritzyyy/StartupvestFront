@@ -97,7 +97,9 @@ const MonthlyFundingChart = ({ userId, companyId }) => {
     <Box
       sx={{
         backgroundColor: '#fff',
-        height: '400px',
+        mt: 1,
+        minHeight: '480px',
+        maxHeight: '100%',
         display: 'flex',
         flexDirection: 'column',
       }}>
@@ -125,7 +127,7 @@ const MonthlyFundingChart = ({ userId, companyId }) => {
               },
               title: {
                 display: true,
-                text: 'Total Funding (₱)',
+                text: 'Total Funding',
                 font: {
                   size: 14,
                 },
