@@ -171,27 +171,33 @@ function FundingRoundView() {
                     </TableRow>
                   </StyledTableHead>
                   <TableBody>
-                    {paginatedInvestors && paginatedInvestors.map((investorDetail, index) => {
-                      const investor = investorDetail.investor || {};
-                      return (
-                        <TableRow key={index}>
-                          <TableCell sx={{ textAlign: 'center' }}>
-                            {investor.firstName || 
-                              fundinground.capTableInvestors[0]?.investorDetails.firstName || 
-                              'N/A'} {investor.lastName || 
-                              fundinground.capTableInvestors[0]?.investorDetails.lastName || 
-                              'N/A'}
-                          </TableCell>
-                          <TableCell sx={{ textAlign: 'center' }}>{investorDetail.title || 'N/A'}</TableCell>
-                          <TableCell sx={{ textAlign: 'center' }}>
-                            {Number(investorDetail.shares || 0).toLocaleString()}
-                          </TableCell>
-                          <TableCell sx={{ textAlign: 'center' }}>
-                            {fundinground.moneyRaisedCurrency} {investorDetail.totalInvestment ? Number(investorDetail.totalInvestment).toLocaleString() : 'N/A'}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                    {paginatedInvestors &&
+                      paginatedInvestors
+                        .filter(investorDetail => {
+                          const investor = investorDetail.investor || {};
+                          return !investor.isDeleted && !investorDetail.investorRemoved; // Only include non-deleted and non-removed investors
+                        })
+                        .map((investorDetail, index) => {
+                          const investor = investorDetail.investor || {};
+                          return (
+                            <TableRow key={index}>
+                              <TableCell sx={{ textAlign: 'center' }}>
+                                {investor.firstName || 
+                                  fundinground.capTableInvestors[0]?.investorDetails.firstName || 
+                                  'N/A'} {investor.lastName || 
+                                  fundinground.capTableInvestors[0]?.investorDetails.lastName || 
+                                  'N/A'}
+                              </TableCell>
+                              <TableCell sx={{ textAlign: 'center' }}>{investorDetail.title || 'N/A'}</TableCell>
+                              <TableCell sx={{ textAlign: 'center' }}>
+                                {Number(investorDetail.shares || 0).toLocaleString()}
+                              </TableCell>
+                              <TableCell sx={{ textAlign: 'center' }}>
+                                {fundinground.moneyRaisedCurrency} {investorDetail.totalInvestment ? Number(investorDetail.totalInvestment).toLocaleString() : 'N/A'}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
                   </TableBody>
                 </StyledTable>
 

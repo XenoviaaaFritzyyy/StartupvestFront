@@ -61,6 +61,12 @@ function StartUpView() {
   const city = startup.city === "N/A" ? "" : startup.city || "";
   const state = startup.state === "N/A" ? "" : startup.state || "";
 
+  const totalMoneyRaised = startup.fundingRounds
+  .filter(fundingRound => !fundingRound.isDeleted) // Filter out deleted funding rounds
+  .reduce((total, fundingRound) => {
+    return total + (fundingRound.moneyRaised || 0); // Default to 0 if moneyRaised is undefined
+  }, 0);
+
   return (
     <Box sx={{ width: '100%', paddingLeft: `${drawerWidth}px`, mt: 5 }}>
       <Navbar />
@@ -232,7 +238,20 @@ function StartUpView() {
 
                     <Divider sx={{ mb: 2 }} />
 
-                    <FundingDescription>Total Funds Raised: <strong>P50,000</strong></FundingDescription>
+                    <FundingDescription>
+                      Total Funds Raised: 
+                      <strong>
+                        {startup.fundingRounds.length > 0 ? (
+                          <div>
+                            <p>
+                              {startup.fundingRounds[0].moneyRaisedCurrency} {totalMoneyRaised.toLocaleString()}
+                            </p>
+                          </div>
+                        ) : (
+                          <p>No funding rounds available</p>
+                        )}
+                      </strong>
+                    </FundingDescription>
                     <FundingNote>*Funds raised through various funding rounds.</FundingNote>
                   </CardStyled>
 
@@ -241,7 +260,7 @@ function StartUpView() {
                     <FundingTitle>Funding Rounds</FundingTitle>
                     <Divider sx={{ mb: 2 }} />
                     <FundingDescription>
-                      Total Number of Rounds: <strong>2</strong>
+                      Total Number of Rounds: <strong>{startup.fundingRounds.filter(round => !round.isDeleted).length}</strong>
                     </FundingDescription>
                     <FundingNote>*Includes all rounds since inception.</FundingNote>
                   </CardStyled>
@@ -250,12 +269,60 @@ function StartUpView() {
                   <CardStyled>
                     <FundingTitle>Investors</FundingTitle>
                     <Divider sx={{ mb: 2 }} />
+
+                    {/* Total Number of Investors */}
                     <FundingDescription>
-                      Total Number of Investors: <strong>10</strong>
+                      Total Number of Investors: <strong>{startup.fundingRounds.flatMap(round => round.capTableInvestors)
+                        .filter(investorDetail => !investorDetail.isDeleted && !investorDetail.investorRemoved)
+                        .map(investorDetail => investorDetail.investor.id) // To get unique investor IDs
+                        .filter((value, index, self) => self.indexOf(value) === index).length}</strong>
                     </FundingDescription>
-                    <FundingNote>Lead Investor: <strong>XYZ Capital</strong></FundingNote>
-                    <FundingNote>Repeat Investor: <strong>Rob Borinaga</strong></FundingNote>
+
+                    {/* Lead Investor */}
+                    <FundingNote>
+                      Lead Investor: <strong>
+                        {
+                          (() => {
+                            const allInvestors = startup.fundingRounds.flatMap(round => round.capTableInvestors)
+                              .filter(investorDetail => !investorDetail.isDeleted && !investorDetail.investorRemoved);
+
+                            const leadInvestor = allInvestors.reduce((prev, current) => {
+                              return (prev.totalInvestment > current.totalInvestment) ? prev : current;
+                            }, { totalInvestment: 0 });
+
+                            return leadInvestor.investor?.firstName ? `${leadInvestor.investor.firstName} ${leadInvestor.investor.lastName}` : 'N/A';
+                          })()
+                        }
+                      </strong>
+                    </FundingNote>
+
+                    {/* Repeat Investor */}
+                    <FundingNote>
+                      Repeat Investor: <strong>
+                        {
+                          (() => {
+                            const investmentCounts = {};
+                            const allInvestors = startup.fundingRounds.flatMap(round => round.capTableInvestors)
+                              .filter(investorDetail => !investorDetail.isDeleted && !investorDetail.investorRemoved);
+
+                            allInvestors.forEach(investorDetail => {
+                              const investorId = investorDetail.investor.id;
+                              if (investmentCounts[investorId]) {
+                                investmentCounts[investorId].count += 1;
+                                investmentCounts[investorId].investor = investorDetail.investor;
+                              } else {
+                                investmentCounts[investorId] = { count: 1, investor: investorDetail.investor };
+                              }
+                            });
+
+                            const repeatInvestors = Object.values(investmentCounts).filter(investor => investor.count > 1);
+                            return repeatInvestors.length > 0 ? `${repeatInvestors[0].investor.firstName} ${repeatInvestors[0].investor.lastName}` : 'N/A';
+                          })()
+                        }
+                      </strong>
+                    </FundingNote>
                   </CardStyled>
+
                 </FundingBox>
               </Grid>
 
