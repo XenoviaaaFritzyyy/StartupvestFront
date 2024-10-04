@@ -201,10 +201,6 @@ export default function Companies() {
     [order, orderBy, page, rowsPerPage, filteredRows],
   );
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <Box sx={{ width: '100%', paddingLeft: `${drawerWidth}px` }}>
       <Navbar />
