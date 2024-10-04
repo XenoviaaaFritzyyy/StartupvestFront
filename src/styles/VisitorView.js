@@ -3,8 +3,8 @@ import { Box, Avatar, Typography, Table, TableHead, TableCell, Card } from '@mui
 
 // Avatar Styles
 export const StyledAvatar = styled(Avatar)(({ theme }) => ({
-    width: 150,
-    height: 150,
+    width: 160,
+    height: 160,
     border: '3px solid rgba(0, 116, 144, 1)',
     borderRadius: 3,
     marginLeft: theme.spacing(8),
@@ -31,7 +31,6 @@ export const OverviewBox = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     borderRadius: 2,
-    paddingBottom: theme.spacing(3),
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
   }));  
@@ -39,16 +38,16 @@ export const OverviewBox = styled(Box)(({ theme }) => ({
 export const OverviewTitle = styled(Typography)(({ theme }) => ({
     fontWeight: 'bold',
     color: 'rgba(0, 116, 144, 1)',
-    marginBottom: theme.spacing(3),
 }));
 
 // Styles for Icons Container
 export const IconsContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
+    flexDirection: 'column',
     gap: theme.spacing(1),
-    position: 'absolute',
-    paddingTop: 20,
-    paddingBottom: 20,
+    position: 'fixed',
+    bottom: 20,
+    right: 15,
 }));
 
 // Styled Table
